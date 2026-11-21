@@ -133,6 +133,55 @@ header::after {
   filter: invert(1) drop-shadow(0 0 8px rgba(248, 223, 151, 0.75));
 }
 
+/* Universal SVG Icon integration */
+.svg-icon {
+  width: 1.15em;
+  height: 1.15em;
+  vertical-align: -0.16em;
+  display: inline-block;
+  object-fit: contain;
+}
+
+.sidebar-section h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-section h3 .svg-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex-shrink: 0;
+}
+
+.btn .svg-icon {
+  margin-right: 6px;
+  vertical-align: -0.16em;
+}
+
+.pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pill-icon .svg-icon {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+.modal-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-icon .svg-icon {
+  width: 26px;
+  height: 26px;
+}
+
 .title-text h1 {
   font-family: var(--font-serif-thai);
   font-size: 1.35rem;
@@ -916,6 +965,15 @@ canvas {
   opacity: 0;
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 .toast.visible {

@@ -129,7 +129,7 @@ class LoyKrathongApp {
         if (currentData) {
           const text = this.asciiRenderer.toPlainText(currentData);
           navigator.clipboard.writeText(text).then(() => {
-            this.showToast('📋 Copied ASCII art frame to clipboard!');
+            this.showToast('Copied ASCII art frame to clipboard!', 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4cb.svg');
           });
         }
       });
@@ -142,7 +142,7 @@ class LoyKrathongApp {
         if (currentData) {
           const ansi = this.asciiRenderer.toAnsiString(currentData);
           navigator.clipboard.writeText(ansi).then(() => {
-            this.showToast('🌈 Copied 24-bit ANSI colored text!');
+            this.showToast('Copied 24-bit ANSI colored text!', 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f308.svg');
           });
         }
       });
@@ -157,7 +157,7 @@ class LoyKrathongApp {
         link.download = `loy-krathong-${Date.now()}.png`;
         link.href = activeCanvas.toDataURL('image/png');
         link.click();
-        this.showToast('📸 Snapshot saved!');
+        this.showToast('Snapshot saved!', 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f4f8.svg');
       });
     }
 
@@ -266,7 +266,7 @@ class LoyKrathongApp {
         const text = wishInput.value.trim() || 'ขอขมาพระแม่คงคา & สุขภาพแข็งแรง';
         const col = wishColorSelect ? wishColorSelect.value : 'pink';
         this.engine.addWishKrathong(text, col);
-        this.showToast(`🪷 Wish Krathong released: "${text}"`);
+        this.showToast(`Wish Krathong released: "${text}"`, 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1fab7.svg');
         wishModal.classList.add('hidden');
         wishInput.value = '';
 
@@ -291,7 +291,7 @@ class LoyKrathongApp {
     if (lanternBtn) {
       lanternBtn.addEventListener('click', () => {
         this.engine.addSkyLantern();
-        this.showToast('🏮 Sky lantern (โคมลอย) released into the stars!');
+        this.showToast('Sky lantern (โคมลอย) released into the stars!', 'https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f3ee.svg');
         if (this.audio.ctx) {
           const now = this.audio.ctx.currentTime;
           if (this.audio.playRanatNote) {
@@ -366,10 +366,14 @@ class LoyKrathongApp {
     this.container.className = `canvas-container mode-${mode}`;
   }
 
-  showToast(msg) {
+  showToast(msg, iconUrl) {
     const toast = document.getElementById('toast');
     if (!toast) return;
-    toast.textContent = msg;
+    if (iconUrl) {
+      toast.innerHTML = `<img class="svg-icon toast-svg" src="${iconUrl}" alt=""><span>${msg}</span>`;
+    } else {
+      toast.textContent = msg;
+    }
     toast.classList.add('visible');
     clearTimeout(this.toastTimer);
     this.toastTimer = setTimeout(() => {
