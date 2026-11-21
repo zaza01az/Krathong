@@ -120,9 +120,6 @@ header::after {
 }
 
 .logo-icon {
-  font-size: 26px;
-  filter: drop-shadow(0 0 12px rgba(248, 223, 151, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
-  transform: translateY(-1px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,7 +130,7 @@ header::after {
   height: 32px;
   object-fit: contain;
   display: block;
-  border-radius: 4px;
+  filter: invert(1) drop-shadow(0 0 8px rgba(248, 223, 151, 0.75));
 }
 
 .title-text h1 {
