@@ -123,6 +123,17 @@ header::after {
   font-size: 26px;
   filter: drop-shadow(0 0 12px rgba(248, 223, 151, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
   transform: translateY(-1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  display: block;
+  border-radius: 4px;
 }
 
 .title-text h1 {
