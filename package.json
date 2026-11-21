@@ -1,0 +1,26 @@
+{
+  "name": "loy-krathong-3d-ascii",
+  "version": "1.0.0",
+  "description": "3D Mathematical Terminal Animation of Loy Krathong Festival with real-time numeric ASCII and luminous canvas simulation",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "serve": "python -m http.server 8000",
+    "python-sim": "python krathong.py"
+  },
+  "keywords": [
+    "loy-krathong",
+    "ascii-art",
+    "3d-graphics",
+    "web-audio",
+    "canvas",
+    "terminal"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

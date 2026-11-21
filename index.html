@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loy Krathong Festival • 3D Mathematical Terminal Animation</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cascadia+Code:wght@400;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Top Header Navigation -->
+  <header>
+    <div class="logo-group">
+      <div class="logo-icon">🪷</div>
+      <div class="title-text">
+        <h1>LOY KRATHONG FESTIVAL (ประเพณีลอยกระทง)</h1>
+        <p>3D Mathematical Terminal & Real-Time Numeric ASCII Simulation</p>
+      </div>
+    </div>
+    <div class="header-badges">
+      <div class="badge fps-badge" id="fpsDisplay">60 FPS</div>
+      <div class="badge">120 × 44 Grid</div>
+      <button class="btn" id="audioBtn"> Music: OFF</button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <div class="app-container">
+
+    <!-- Left Sidebar: Controls & Customization -->
+    <aside class="sidebar">
+
+      <!-- Rendering & Character Set -->
+      <div class="sidebar-section">
+        <h3>🎨 Character & Display</h3>
+
+        <div class="control-group">
+          <div class="control-label"><span>Character Ramp</span></div>
+          <select id="rampSelect">
+            <option value="numeric">Original Numeric: " 0123456789"</option>
+            <option value="standard">Standard ASCII: " .:-=+*#%@"</option>
+            <option value="thai">Thai Numerals: " ๐๑๒๓๔๕๖๗๘๙"</option>
+            <option value="blocks">Block Shades: " ░▒▓█"</option>
+            <option value="minimal">Minimal: " ·:!|#@"</option>
+            <option value="matrix">Matrix Code: " 0101010101"</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label"><span>Color Palette</span></div>
+          <select id="palSelect">
+            <option value="truecolor">Full 24-bit TrueColor (Python)</option>
+            <option value="amber">Vintage Amber CRT (Phosphor P3)</option>
+            <option value="green">Retro Green CRT (Phosphor P1)</option>
+            <option value="gold">Royal Siam Gold</option>
+            <option value="cyan">Cyberpunk Cyan</option>
+            <option value="mono">Monochrome Grayscale</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="crtToggle" checked>
+            <span>CRT Scanlines & Curved Screen</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Krathong & Atmosphere -->
+      <div class="sidebar-section">
+        <h3>🪷 Krathong & Atmosphere</h3>
+
+        <div class="control-group">
+          <div class="control-label"><span>Lotus Petal Style</span></div>
+          <select id="lotusSelect">
+            <option value="pink">Royal Pink Lotus (ดอกบัวชมพู)</option>
+            <option value="gold">Siam Royal Gold (ทองคำอร่าม)</option>
+            <option value="emerald">Emerald Jade (หยกมรกต)</option>
+            <option value="white">Pure White Jasmine (มะลิบริสุทธิ์)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label"><span>Night Sky Atmosphere</span></div>
+          <select id="themeSelect">
+            <option value="night">Full Moon Midnight (คืนวันเพ็ญ)</option>
+            <option value="twilight">Purple Twilight (ยามพลบค่ำ)</option>
+            <option value="dusk">Golden Dusk (ยามอาทิตย์อัสดง)</option>
+            <option value="dawn">Morning Dawn (ยามรุ่งอรุณ)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label"><span>Resolution Grid</span></div>
+          <select id="gridSelect">
+            <option value="120x44">Classic: 120 × 44 (Python Default)</option>
+            <option value="80x30">Compact: 80 × 30</option>
+            <option value="160x60">HD Grid: 160 × 60</option>
+            <option value="200x75">Ultra High-Res: 200 × 75</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Physics & Environment Sliders -->
+      <div class="sidebar-section">
+        <h3>🌊 Physics & Lighting</h3>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Water Currents & Waves</span>
+            <span id="waterSliderVal">1.0x</span>
+          </div>
+          <input type="range" id="waterSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Wind Force (Flame & Smoke)</span>
+            <span id="windSliderVal">0.00</span>
+          </div>
+          <input type="range" id="windSlider" min="-1.5" max="1.5" step="0.05" value="0.0">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Candle Light & Flicker</span>
+            <span id="candleSliderVal">1.0x</span>
+          </div>
+          <input type="range" id="candleSlider" min="0.3" max="2.2" step="0.1" value="1.0">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Moon Radiance</span>
+            <span id="moonSliderVal">1.0x</span>
+          </div>
+          <input type="range" id="moonSlider" min="0.2" max="2.0" step="0.1" value="1.0">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">
+            <span>Simulation Speed</span>
+            <span id="speedSliderVal">1.0x</span>
+          </div>
+          <input type="range" id="speedSlider" min="0.2" max="3.0" step="0.1" value="1.0">
+        </div>
+      </div>
+
+      <!-- Export & Utilities -->
+      <div class="sidebar-section">
+        <h3>💾 Export & Code</h3>
+        <div class="btn-grid" style="margin-bottom: 8px;">
+          <button class="btn" id="copyAsciiBtn" title="Copy ASCII plain text to clipboard">📋 Copy ASCII</button>
+          <button class="btn" id="copyAnsiBtn" title="Copy 24-bit ANSI colored text">🌈 Copy ANSI</button>
+        </div>
+        <div class="btn-grid" style="margin-bottom: 8px;">
+          <button class="btn" id="snapshotBtn">📸 Save PNG</button>
+          <button class="btn" id="pauseBtn">⏸️ Pause</button>
+        </div>
+        <button class="btn btn-full primary" id="viewCodeBtn">📜 Inspect Math & Python Code</button>
+      </div>
+
+    </aside>
+
+    <!-- Main Viewport Canvas -->
+    <main class="viewport-area">
+
+      <!-- Top Viewport Mode Bar -->
+      <div class="viewport-toolbar">
+        <div class="mode-switch-group">
+          <button class="mode-btn active" data-mode="ascii">📟 Numeric ASCII Matrix (Python 1:1)</button>
+          <button class="mode-btn" data-mode="graphic">🌸 Luminous Graphic</button>
+          <button class="mode-btn" data-mode="split">🔀 Split Dual View</button>
+        </div>
+        <div style="font-size: 12px; color: var(--text-muted);">
+          <span>Full Moon Night • Wat Arun Silhouette • Candlelight Reflection</span>
+        </div>
+      </div>
+
+      <!-- Canvas Rendering Screen -->
+      <div class="canvas-container mode-ascii" id="canvasContainer">
+        <canvas id="asciiCanvas" class="crt-curvature" width="960" height="660"></canvas>
+        <canvas id="graphicCanvas" width="960" height="660" style="display:none;"></canvas>
+      </div>
+
+      <!-- Bottom Floating Action Bar -->
+      <div class="floating-actions">
+        <button class="action-pill action-wish" id="floatWishBtn">
+          <span>🪷</span>
+          <span>Make a Wish & Float Krathong (อธิษฐาน & ปล่อยกระทง)</span>
+        </button>
+        <button class="action-pill action-lantern" id="floatLanternBtn">
+          <span>🏮</span>
+          <span>Release Sky Lantern (ปล่อยโคมลอย)</span>
+        </button>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Wish Dialog Modal -->
+  <div class="modal-overlay hidden" id="wishModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>🪷 อธิษฐานลอยกระทง (Float Your Wish)</h2>
+        <button class="modal-close" id="closeWishBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+          Traditional Loy Krathong prayer: Request forgiveness from Phra Mae Khongkha (Goddess of Water), wash away bad
+          luck, and send blessings for peace, prosperity, and love.
+        </p>
+
+        <div class="control-group">
+          <label style="font-size: 12px; color: var(--thai-gold); margin-bottom: 6px; display: block;">Your Wish /
+            คำอธิษฐาน:</label>
+          <input type="text" id="wishInput" placeholder="e.g., ขอขมาพระแม่คงคา สุขภาพแข็งแรง มีความสุขตลอดปี"
+            value="ขอขมาพระแม่คงคา & สุขภาพแข็งแรง เจริญรุ่งเรือง">
+        </div>
+
+        <div class="control-group">
+          <label style="font-size: 12px; color: var(--thai-gold); margin-bottom: 6px; display: block;">Krathong Offering
+            Color:</label>
+          <select id="wishColorSelect">
+            <option value="pink">Pink Lotus & Banana Leaf (ดอกบัวสีชมพู)</option>
+            <option value="gold">Golden Marigold Royal (ดาวเรืองสีทอง)</option>
+            <option value="white">White Orchid & Jasmine (กล้วยไม้ขาว)</option>
+            <option value="emerald">Emerald Green (ใบตองสดมรกต)</option>
+          </select>
+        </div>
+
+        <button class="btn btn-full primary" id="sendWishBtn" style="padding: 12px; font-size: 14px; font-weight: 600;">
+          🕯️ Light Candle & Release Krathong onto River
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Python Math Code Inspector Modal -->
+  <div class="modal-overlay hidden" id="codeModal">
+    <div class="modal-card" style="max-width: 750px;">
+      <div class="modal-header">
+        <h2>📜 Mathematical Model & Python Source</h2>
+        <button class="modal-close" id="closeCodeBtn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-muted);">
+          The simulation runs 1:1 mathematical formulas identical to the Python script: 3D parametric surface geometry,
+          surface normal gradients, Z-buffering, water wave harmonics, flame fluid oscillation, and numeric density
+          rasterization.
+        </p>
+        <div class="code-container"># 1. 3D Krathong Floating Pose (Yaw, Pitch, Roll & Bobbing)
+          def body_pose(t):
+          yaw = 0.25 * t + 0.15 * math.sin(W0 * 0.8 * t)
+          roll = 0.045 * math.sin(W0 * 1.7 * t)
+          pitch = 0.035 * math.cos(W0 * 1.3 * t)
+          R = Ry(yaw) @ Rx(pitch) @ Rz(roll)
+          T = np.array([0.06 * math.sin(W0 * 0.9 * t), 0.025 * math.sin(W0 * 2.1 * t), 0.0])
+          return R, T
+
+          # 2. Summed Water Wave Harmonics with Perspective Compression
+          h = (
+          sin(u * 6 + z * 1.4 - W0 * 3 * t)
+          + 0.7 * sin(u * 11 - z * 2.3 + W0 * 4 * t)
+          + 0.5 * sin(u * 3 + z * 3.9 - W0 * 2 * t + 2.1)
+          + 0.3 * sin(u * 17 + z * 6.1 + W0 * 5 * t)
+          )
+
+          # 3. Teardrop Candle Flame Multi-frequency Flicker & Sway
+          sway = 9 * math.sin(W0 * 5 * t + 0.7) + 5 * math.sin(W0 * 11 * t)
+          wid = fw * sin(pi * s^0.6)^0.8 * (1 + 0.08 * sin(s * 12 - W0 * 10 * t))
+
+          # 4. Numeric Character Density Ramp
+          NUM_RAMP = " 0123456789"
+          char = NUM_RAMP[int(density * len(NUM_RAMP))]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Notification</div>
+
+  <!-- App Entry Script -->
+  <script type="module" src="src/app.js"></script>
+</body>
+
+</html>
