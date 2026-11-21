@@ -210,7 +210,7 @@ class LoyKrathongApp {
     // Site title & subtitle
     const siteTitle = document.getElementById('site-title');
     const siteSub   = document.getElementById('site-subtitle');
-    if (siteTitle) siteTitle.textContent = isEn ? 'Loy Krathong Festival' : 'ประเพณีลอยกระทง';
+    if (siteTitle) siteTitle.textContent = isEn ? 'Loy Krathong Festival' : 'อนิเมชั่นกระทง';
     if (siteSub)   siteSub.textContent   = isEn
       ? '3D Mathematical ASCII Simulation'
       : 'จำลอง 3D ตัวอักษร ASCII เชิงคณิตศาสตร์';
