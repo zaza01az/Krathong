@@ -92,7 +92,19 @@ class LoyKrathongApp {
       audioBtn.addEventListener('click', () => {
         const playing = this.audio.toggle();
         audioBtn.classList.toggle('active', playing);
-        audioBtn.innerHTML = playing ? '🎵 Music: ON' : '🔇 Music: OFF';
+        const isEn = document.documentElement.lang === 'en';
+        audioBtn.textContent = playing
+          ? (isEn ? 'Music: ON' : 'เปิดเพลง: เปิด')
+          : (isEn ? 'Music: OFF' : 'เปิดเพลง: ปิด');
+      });
+    }
+
+    // Language toggle
+    const langBtn = document.getElementById('langBtn');
+    if (langBtn) {
+      langBtn.addEventListener('click', () => {
+        const isEn = document.documentElement.lang === 'en';
+        this.setLang(isEn ? 'th' : 'en');
       });
     }
 
@@ -101,7 +113,10 @@ class LoyKrathongApp {
     if (pauseBtn) {
       pauseBtn.addEventListener('click', () => {
         this.isPaused = !this.isPaused;
-        pauseBtn.innerHTML = this.isPaused ? '▶️ Resume' : '⏸️ Pause';
+        const isEn = document.documentElement.lang === 'en';
+        pauseBtn.textContent = this.isPaused
+          ? (isEn ? 'Resume' : 'เล่นต่อ')
+          : (isEn ? 'Pause' : 'หยุด');
       });
     }
 
@@ -163,6 +178,49 @@ class LoyKrathongApp {
     }
     if (closeCodeBtn && codeModal) {
       closeCodeBtn.addEventListener('click', () => codeModal.classList.add('hidden'));
+    }
+  }
+
+  /**
+   * Switch all labelled elements between Thai and English.
+   * Elements carry data-th / data-en attributes for their text.
+   */
+  setLang(lang) {
+    document.documentElement.lang = lang;
+    const isEn = lang === 'en';
+
+    // All elements with data-th / data-en
+    document.querySelectorAll('[data-th]').forEach(el => {
+      const text = isEn ? el.dataset.en : el.dataset.th;
+      if (text !== undefined) {
+        // For elements that contain only text (no child elements)
+        if (el.children.length === 0) {
+          el.textContent = text;
+        }
+      }
+    });
+
+    // Update mode buttons separately (they use data-th / data-en on themselves)
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+      const text = isEn ? btn.dataset.en : btn.dataset.th;
+      if (text) btn.textContent = text;
+    });
+
+    // Site title & subtitle
+    const siteTitle = document.getElementById('site-title');
+    const siteSub   = document.getElementById('site-subtitle');
+    if (siteTitle) siteTitle.textContent = isEn ? 'Loy Krathong Festival' : 'ประเพณีลอยกระทง';
+    if (siteSub)   siteSub.textContent   = isEn
+      ? '3D Mathematical ASCII Simulation'
+      : 'จำลอง 3D ตัวอักษร ASCII เชิงคณิตศาสตร์';
+
+    // Audio button (re-sync with playing state)
+    const audioBtn = document.getElementById('audioBtn');
+    if (audioBtn) {
+      const playing = this.audio.isPlaying?.() ?? audioBtn.classList.contains('active');
+      audioBtn.textContent = playing
+        ? (isEn ? 'Music: ON' : 'เปิดเพลง: เปิด')
+        : (isEn ? 'Music: OFF' : 'เปิดเพลง: ปิด');
     }
   }
 

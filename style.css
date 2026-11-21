@@ -29,7 +29,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
-  background-image: 
+  background-image:
     radial-gradient(circle at 80% 20%, rgba(255, 230, 150, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 20% 70%, rgba(43, 217, 200, 0.05) 0%, transparent 45%);
 }
@@ -62,6 +62,7 @@ header {
   font-weight: 700;
   letter-spacing: 0.5px;
   background: linear-gradient(90deg, #ffe082, #ffab40, #ff80ab);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -157,7 +158,8 @@ header {
   color: var(--thai-gold-light);
 }
 
-select, input[type="text"] {
+select,
+input[type="text"] {
   width: 100%;
   background: rgba(10, 16, 30, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -169,7 +171,8 @@ select, input[type="text"] {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-select:focus, input[type="text"]:focus {
+select:focus,
+input[type="text"]:focus {
   border-color: var(--thai-gold);
   box-shadow: 0 0 10px rgba(245, 196, 83, 0.25);
 }
@@ -324,6 +327,7 @@ canvas {
 .canvas-container.mode-ascii #asciiCanvas {
   display: block;
 }
+
 .canvas-container.mode-ascii #graphicCanvas {
   display: none;
 }
@@ -331,6 +335,7 @@ canvas {
 .canvas-container.mode-graphic #asciiCanvas {
   display: none;
 }
+
 .canvas-container.mode-graphic #graphicCanvas {
   display: block;
 }
@@ -338,6 +343,7 @@ canvas {
 .canvas-container.mode-split {
   gap: 20px;
 }
+
 .canvas-container.mode-split #asciiCanvas,
 .canvas-container.mode-split #graphicCanvas {
   display: block;
@@ -490,14 +496,184 @@ canvas {
 }
 
 /* Responsive */
+
+/* Language toggle button */
+.lang-toggle {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 5px 10px;
+  border-color: var(--thai-gold);
+  color: var(--thai-gold);
+}
+
+.lang-toggle:hover {
+  background: rgba(245, 196, 83, 0.15);
+}
+
+/* ── Tablet (≤ 900px) ── */
 @media (max-width: 900px) {
   .app-container {
     flex-direction: column;
   }
+
   .sidebar {
     width: 100%;
-    max-height: 220px;
+    max-height: 230px;
     border-right: none;
     border-bottom: 1px solid var(--border-card);
+    overflow-x: auto;
+    overflow-y: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .sidebar-section {
+    min-width: 240px;
+    border-bottom: none;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .canvas-container.mode-split {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .canvas-container.mode-split #asciiCanvas,
+  .canvas-container.mode-split #graphicCanvas {
+    max-width: 100%;
+  }
+
+  .floating-actions {
+    bottom: 12px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .action-pill {
+    padding: 7px 12px;
+    font-size: 12px;
+  }
+}
+
+/* ── Mobile (≤ 600px) ── */
+@media (max-width: 600px) {
+  header {
+    padding: 10px 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .logo-icon {
+    font-size: 22px;
+  }
+
+  .title-text h1 {
+    font-size: 14px;
+  }
+
+  .title-text p {
+    display: none;
+  }
+
+  .header-badges {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  /* Hide the grid-size badge on very small screens */
+  #gridBadge {
+    display: none;
+  }
+
+  .btn {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .sidebar {
+    max-height: 200px;
+  }
+
+  .sidebar-section {
+    min-width: 200px;
+    padding: 12px 14px;
+  }
+
+  .sidebar-section h3 {
+    font-size: 10px;
+  }
+
+  .viewport-toolbar {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+  }
+
+  .viewport-toolbar > div:last-child {
+    display: none;
+  }
+
+  .mode-btn {
+    font-size: 11px;
+    padding: 5px 10px;
+  }
+
+  .canvas-container {
+    padding: 10px;
+  }
+
+  .floating-actions {
+    flex-direction: column;
+    align-items: stretch;
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    transform: none;
+    border-radius: 16px;
+    padding: 10px 12px;
+    gap: 6px;
+  }
+
+  .action-pill {
+    justify-content: center;
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .modal-card {
+    width: 95%;
+    padding: 18px 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 15px;
+  }
+
+  .btn-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .code-container {
+    font-size: 10px;
+    max-height: 260px;
+  }
+}
+
+/* ── Very small (≤ 380px) ── */
+@media (max-width: 380px) {
+  .floating-actions {
+    left: 8px;
+    right: 8px;
+  }
+
+  .title-text h1 {
+    font-size: 12px;
   }
 }
