@@ -44,6 +44,8 @@ export class LoyKrathongEngine {
     this.floatingWishes = [];
     // User-released sky lanterns
     this.userSkyLanterns = [];
+    // Interactive dynamic water ripples
+    this.interactiveRipples = [];
 
     this.initGeometry();
     this.initBuffers();
@@ -88,20 +90,48 @@ export class LoyKrathongEngine {
   }
 
   addWishKrathong(text, color = 'pink') {
-    const startX = (Math.random() - 0.5) * 200 + this.kx;
+    // Launch near center-bottom with slight random spread, then naturally bob & drift downstream
+    const startX = this.kx + (Math.random() - 0.5) * (this.artW * 0.25);
+    const startY = this.ky + 25 + Math.random() * 20;
     this.floatingWishes.push({
       id: Math.random().toString(36).slice(2, 9),
-      text: text,
+      text: text || 'ขอขมาพระแม่คงคา',
       color: color,
       x: startX,
-      y: this.ky - 12,
-      z: 0.15,
-      driftX: (Math.random() - 0.5) * 0.35,
-      driftY: 0.14 + Math.random() * 0.1,
-      driftZ: 0.08 + Math.random() * 0.05,
-      flickerOffset: Math.random() * 10,
+      y: startY,
+      z: 0.1,
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: -(0.18 + Math.random() * 0.12), // drifting toward horizon
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.04,
+      flickerOffset: Math.random() * 20,
+      chaosPhase: Math.random() * 50,
+      scale: 1.0,
       born: performance.now() * 0.001
     });
+
+    // Create a welcoming water ripple on release
+    this.addRipple(startX, startY, 1.2);
+  }
+
+  addRipple(artX, artY, strength = 1.0) {
+    // Ensure ripple is on river water (below or near horizon)
+    if (artY < this.hor * 0.85) return;
+    this.interactiveRipples.push({
+      x: artX,
+      y: artY,
+      radius: 0,
+      maxRadius: 180 + strength * 100,
+      speed: 130 + strength * 40, // pixels per sec
+      strength: Math.min(Math.max(strength, 0.4), 2.5),
+      age: 0,
+      maxAge: 2.8 + strength * 0.8
+    });
+
+    // Limit active ripples for performance
+    if (this.interactiveRipples.length > 12) {
+      this.interactiveRipples.shift();
+    }
   }
 
   addSkyLantern(wishText = '') {
@@ -125,6 +155,17 @@ export class LoyKrathongEngine {
   render(t) {
     this.clearBuffers();
     const simTime = t * this.speed;
+
+    // Update interactive water ripples
+    const dt = 0.016; // approximate per-frame delta
+    for (let i = this.interactiveRipples.length - 1; i >= 0; i--) {
+      const rip = this.interactiveRipples[i];
+      rip.age += dt;
+      rip.radius += rip.speed * dt;
+      if (rip.age >= rip.maxAge || rip.radius >= rip.maxRadius) {
+        this.interactiveRipples.splice(i, 1);
+      }
+    }
 
     // 1. Calculate candle projection for reflection alignment
     const { R, T } = body_pose(simTime);
@@ -317,15 +358,38 @@ export class LoyKrathongEngine {
         const x = (c + 0.5) * cw;
         const u = (x - kx) / (60.0 + q * 700.0);
 
-        const h = (
+        let h = (
           Math.sin(u * 6.0 + z * 1.4 - W0 * 3.0 * t) +
           0.7 * Math.sin(u * 11.0 - z * 2.3 + W0 * 4.0 * t) +
           0.5 * Math.sin(u * 3.0 + z * 3.9 - W0 * 2.0 * t + 2.1) +
           0.3 * Math.sin(u * 17.0 + z * 6.1 + W0 * 5.0 * t)
         ) * rough;
 
+        // Radiating dynamic concentric ripples from touch/clicks
+        let rippleElevation = 0.0;
+        let rippleLight = 0.0;
+        if (this.interactiveRipples.length > 0) {
+          for (let ri = 0; ri < this.interactiveRipples.length; ri++) {
+            const rip = this.interactiveRipples[ri];
+            // Elliptical perspective aspect for river ripples (water surface viewed at pitch)
+            const drx = x - rip.x;
+            const dry = (y - rip.y) * 2.4;
+            const dist = Math.hypot(drx, dry);
+            const waveFront = dist - rip.radius;
+
+            // Concentric radiating sine waves around waveFront
+            if (Math.abs(waveFront) < 42.0) {
+              const fade = Math.max(0, 1.0 - rip.age / rip.maxAge) * Math.max(0, 1.0 - dist / rip.maxRadius);
+              const waveVal = Math.sin(waveFront * 0.28) * Math.exp(-Math.pow(waveFront / 18.0, 2)) * rip.strength * fade;
+              rippleElevation += waveVal;
+              rippleLight += Math.max(0, waveVal) * 0.85;
+            }
+          }
+          h += rippleElevation * 1.5;
+        }
+
         const wave = 0.5 + 0.5 * Math.tanh(h * 0.9);
-        let d = 0.12 + 0.32 * wave * (0.4 + 0.6 * q);
+        let d = 0.12 + 0.32 * wave * (0.4 + 0.6 * q) + rippleLight * 0.45;
 
         let wc = mix([0.03, 0.26, 0.30], [0.12, 0.56, 0.54], wave);
         wc = mix(wc, [0.55, 0.30, 0.10], Math.min(Math.max(1.0 - q * 9.0, 0.0), 1.0) * 0.7);
@@ -377,6 +441,11 @@ export class LoyKrathongEngine {
 
         let maxD = d;
         let chosenCol = wc;
+
+        if (rippleLight > 0.08) {
+          const ripTint = mix(wc, gold, Math.min(rippleLight * 1.2, 0.85));
+          chosenCol = ripTint;
+        }
 
         if (frVal > maxD) {
           maxD = frVal;
@@ -543,8 +612,27 @@ export class LoyKrathongEngine {
 
     const fh = 150.0;
     const fw = 34.0;
-    const flick = (1.0 + 0.10 * Math.sin(W0 * 7.0 * t) + 0.06 * Math.sin(W0 * 13.0 * t + 1.0)) * this.candleIntensity;
-    const sway = 10.0 * Math.sin(W0 * 5.0 * t + 0.7) + 5.0 * Math.sin(W0 * 11.0 * t) + this.wind * 16.0;
+
+    // Multi-harmonic chaotic turbulence (Lorenz-like pseudo-chaotic attractor micro-jitters)
+    const tChaos1 = t * 1.83;
+    const tChaos2 = t * 4.37;
+    const tChaos3 = t * 9.61;
+    const tChaos4 = t * 19.3;
+    const chaoticJitter = (
+      0.55 * Math.sin(tChaos1) +
+      0.30 * Math.sin(tChaos2 + 1.2) +
+      0.15 * Math.sin(tChaos3 + 2.7) +
+      0.08 * Math.sin(tChaos4 + 4.1)
+    );
+    const microPulse = 0.05 * Math.sin(t * 31.7) * Math.cos(t * 14.2);
+
+    const flick = (1.0 + 0.12 * chaoticJitter + microPulse) * this.candleIntensity;
+    const sway = (
+      8.0 * Math.sin(W0 * 4.2 * t + 0.7) +
+      4.0 * Math.sin(W0 * 9.5 * t + 1.4) +
+      2.5 * Math.sin(tChaos3) +
+      this.wind * 16.0
+    );
 
     const rMin = Math.max(0, Math.floor((fy - fh * 1.5) / ch));
     const rMax = Math.min(rows, Math.ceil((fy + 25) / ch));
@@ -553,9 +641,9 @@ export class LoyKrathongEngine {
       const y = (r + 0.5) * ch;
       const s = (fy - y) / (fh * flick);
       const sc = Math.min(Math.max(s, 0.0), 1.0);
-      const xo = sway * sc * sc + 3.0 * Math.sin(s * 9.0 - W0 * 9.0 * t) * sc;
+      const xo = sway * sc * sc + (3.0 * Math.sin(s * 9.0 - W0 * 9.0 * t) + chaoticJitter * 2.0) * sc;
       const wid = fw * Math.pow(Math.max(0, Math.sin(Math.PI * Math.pow(sc, 0.6))), 0.8) *
-                  (1.0 + 0.08 * Math.sin(s * 12.0 - W0 * 10.0 * t));
+                  (1.0 + 0.08 * Math.sin(s * 12.0 - W0 * 10.0 * t) + 0.04 * chaoticJitter);
 
       const rOffset = r * cols;
 
@@ -603,27 +691,34 @@ export class LoyKrathongEngine {
     const col = this.colorBuffer;
     const mid = this.midBuffer;
 
-    // 1. Wispy curling smoke from 3 tips
+    // 1. Wispy curling incense smoke with natural chaotic turbulence
     for (let i = 0; i < tipsXY.length; i++) {
       const { x: tx, y: ty } = tipsXY[i];
-      const rMin = Math.max(0, Math.floor((ty - 210) / ch));
+      const rMin = Math.max(0, Math.floor((ty - 220) / ch));
       const rMax = Math.min(rows, Math.ceil(ty / ch));
 
       for (let r = rMin; r < rMax; r++) {
         const y = (r + 0.5) * ch;
         const sy = ty - y;
-        if (sy <= 0 || sy >= 210) continue;
+        if (sy <= 0 || sy >= 220) continue;
 
-        const sx = tx + 14.0 * Math.sin(sy * 0.042 - W0 * 3.5 * t + i * 1.2) * (sy / 130.0) + (this.wind * sy * 0.15);
-        const w = 4.5 + sy * 0.095;
+        const syNorm = sy / 140.0;
+        // Non-linear turbulent curl with multi-frequency eddy currents
+        const eddy = (
+          Math.sin(sy * 0.038 - W0 * 3.2 * t + i * 1.3) +
+          0.45 * Math.sin(sy * 0.082 + W0 * 5.1 * t + i * 2.1) +
+          0.25 * Math.sin(sy * 0.16 - t * 8.4)
+        );
+        const sx = tx + 15.0 * eddy * syNorm + (this.wind * sy * 0.16);
+        const w = 4.0 + sy * 0.098 + 1.2 * Math.sin(sy * 0.05 + t * 2.0);
         const rOffset = r * cols;
 
         for (let c = 0; c < cols; c++) {
           const cellIdx = rOffset + c;
           const x = (c + 0.5) * cw;
-          const smoke = Math.exp(-Math.pow((x - sx) / w, 2)) * Math.exp(-sy / 120.0) * 0.48;
+          const smoke = Math.exp(-Math.pow((x - sx) / Math.max(w, 1.0), 2)) * Math.exp(-sy / 115.0) * 0.48;
 
-          if (smoke > 0.07) {
+          if (smoke > 0.06) {
             dens[cellIdx] = Math.max(dens[cellIdx], smoke);
             col[cellIdx * 3] = Math.min(col[cellIdx * 3] + 0.68 * smoke, 1.0);
             col[cellIdx * 3 + 1] = Math.min(col[cellIdx * 3 + 1] + 0.74 * smoke, 1.0);
@@ -665,51 +760,129 @@ export class LoyKrathongEngine {
   }
 
   renderFloatingWishes(t) {
-    const { cols, rows, cw, ch, hor } = this;
+    const { cols, rows, cw, ch, hor, kx, ky } = this;
     const dens = this.densBuffer;
     const col = this.colorBuffer;
     const mid = this.midBuffer;
 
+    // Palette colors for wish krathong offerings
+    const paletteMap = {
+      pink: { lotus: [0.95, 0.45, 0.65], base: [0.22, 0.55, 0.25] },
+      gold: { lotus: [0.98, 0.82, 0.28], base: [0.72, 0.52, 0.18] },
+      white: { lotus: [0.95, 0.95, 0.98], base: [0.24, 0.52, 0.26] },
+      emerald: { lotus: [0.18, 0.78, 0.45], base: [0.12, 0.48, 0.20] }
+    };
+
     for (let i = this.floatingWishes.length - 1; i >= 0; i--) {
       const wish = this.floatingWishes[i];
-      wish.x += wish.driftX + (this.wind * 0.1);
-      wish.y -= wish.driftY * 0.2;
-      wish.z += wish.driftZ * 0.005;
+      // River current dynamics: flows forward (y drifts towards horizon) and gently undulates
+      wish.rot += wish.rotSpeed;
+      const riverFlow = (wish.y - hor) / Math.max(this.artH - hor, 1); // 0 at horizon, 1 near bottom
+      const currentSpeed = 0.35 + 0.65 * riverFlow;
 
-      const scale = Math.max(0.15, 1.0 / (1.0 + wish.z * 1.5));
-      const cx = Math.floor(wish.x / cw);
-      const cy = Math.floor(wish.y / ch);
+      // Natural meandering current sway
+      const meander = Math.sin(t * 0.8 + wish.chaosPhase) * 0.4 + (this.wind * 0.45);
+      wish.x += (wish.vx + meander) * currentSpeed;
+      wish.y += wish.vy * currentSpeed;
 
-      if (wish.y < hor + 10 || wish.x < 0 || wish.x > this.artW || scale < 0.1) {
+      // Z depth increases as it recedes towards horizon
+      const depthT = Math.max(0.0, Math.min(1.0, (ky - wish.y) / Math.max(ky - hor, 1)));
+      const scale = Math.max(0.2, 1.0 - depthT * 0.75);
+
+      if (wish.y < hor + 12 || wish.x < 10 || wish.x > this.artW - 10) {
         this.floatingWishes.splice(i, 1);
         continue;
       }
 
-      if (cx >= 0 && cx < cols && cy >= 0 && cy < rows) {
-        const cellIdx = cy * cols + cx;
-        const flick = 0.8 + 0.3 * Math.sin(W0 * 8.0 * t + wish.flickerOffset);
+      const colors = paletteMap[wish.color] || paletteMap.pink;
+      const cx = Math.floor(wish.x / cw);
+      const cy = Math.floor(wish.y / ch);
 
-        dens[cellIdx] = Math.max(dens[cellIdx], 0.95 * flick);
-        col[cellIdx * 3] = 1.0;
-        col[cellIdx * 3 + 1] = 0.85;
-        col[cellIdx * 3 + 2] = 0.35;
-        mid[cellIdx] = MID.flame;
+      // Organic bobbing & candle flicker
+      const bob = Math.sin(t * 3.5 + wish.chaosPhase) * 1.5 * scale;
+      const candleY = wish.y - 10 * scale + bob;
+      const candleR = Math.floor(candleY / ch);
+      const flick = 0.82 + 0.28 * Math.sin(W0 * 8.5 * t + wish.flickerOffset) + 0.1 * Math.sin(t * 19.0 + wish.chaosPhase);
 
-        const radius = Math.max(1, Math.floor(2 * scale));
-        for (let dr = -radius; dr <= radius; dr++) {
-          for (let dc = -radius; dc <= radius; dc++) {
-            const nr = cy + dr;
-            const nc = cx + dc;
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-              const nIdx = nr * cols + nc;
-              const dGlow = (0.45 * scale) / (Math.hypot(dr, dc) + 1.0);
-              if (dGlow > dens[nIdx]) {
-                dens[nIdx] = dGlow;
-                col[nIdx * 3] = 0.85;
-                col[nIdx * 3 + 1] = 0.55;
-                col[nIdx * 3 + 2] = 0.20;
-                mid[nIdx] = MID.water;
+      // Render Krathong Body (Lotus Petals & Base Oval)
+      const baseRadiusX = Math.max(2, Math.floor(6.5 * scale));
+      const baseRadiusY = Math.max(1, Math.floor(2.8 * scale));
+
+      for (let dr = -baseRadiusY; dr <= baseRadiusY; dr++) {
+        const nr = cy + dr;
+        if (nr < 0 || nr >= rows) continue;
+        const rOffset = nr * cols;
+
+        for (let dc = -baseRadiusX; dc <= baseRadiusX; dc++) {
+          const nc = cx + dc;
+          if (nc < 0 || nc >= cols) continue;
+
+          const nDist = (dc * dc) / (baseRadiusX * baseRadiusX) + (dr * dr) / (baseRadiusY * baseRadiusY);
+          if (nDist <= 1.0) {
+            const cellIdx = rOffset + nc;
+            const isRim = nDist > 0.55;
+            const pCol = isRim ? colors.lotus : colors.base;
+            const bDens = Math.max(0.55 * scale, 0.4);
+
+            if (bDens > dens[cellIdx]) {
+              dens[cellIdx] = bDens;
+              col[cellIdx * 3] = pCol[0];
+              col[cellIdx * 3 + 1] = pCol[1];
+              col[cellIdx * 3 + 2] = pCol[2];
+              mid[cellIdx] = isRim ? MID.lotus : MID.leaf;
+            }
+          }
+        }
+      }
+
+      // Render Candle Flame Core & Glow
+      if (candleR >= 0 && candleR < rows && cx >= 0 && cx < cols) {
+        const flameIdx = candleR * cols + cx;
+        dens[flameIdx] = 1.0;
+        col[flameIdx * 3] = 1.0;
+        col[flameIdx * 3 + 1] = 0.92 * flick;
+        col[flameIdx * 3 + 2] = 0.45;
+        mid[flameIdx] = MID.flame;
+
+        // Radiating water aura from the glowing candle
+        const glowRad = Math.max(1, Math.floor(3 * scale));
+        for (let gr = -glowRad; gr <= glowRad; gr++) {
+          const gRow = candleR + gr;
+          if (gRow < 0 || gRow >= rows) continue;
+          for (let gc = -glowRad; gc <= glowRad; gc++) {
+            const gCol = cx + gc;
+            if (gCol < 0 || gCol >= cols) continue;
+            const gDist = Math.hypot(gc, gr);
+            if (gDist > 0 && gDist <= glowRad) {
+              const gIdx = gRow * cols + gCol;
+              const gVal = (0.55 * scale * flick) / (gDist + 0.8);
+              if (gVal > dens[gIdx]) {
+                dens[gIdx] = gVal;
+                col[gIdx * 3] = 0.95;
+                col[gIdx * 3 + 1] = 0.65;
+                col[gIdx * 3 + 2] = 0.22;
+                mid[gIdx] = MID.spark;
               }
+            }
+          }
+        }
+      }
+
+      // Parchment wish tag (short subtle text / symbol trailing in the gentle current)
+      if (scale > 0.45 && wish.text) {
+        const tagText = wish.text.length > 10 ? wish.text.slice(0, 8) + '..' : wish.text;
+        const tagRow = cy + Math.max(1, Math.floor(3 * scale));
+        if (tagRow >= 0 && tagRow < rows) {
+          const startCol = cx - Math.floor(tagText.length / 2);
+          for (let ti = 0; ti < tagText.length; ti++) {
+            const tc = startCol + ti;
+            if (tc >= 0 && tc < cols) {
+              const tIdx = tagRow * cols + tc;
+              dens[tIdx] = 0.72;
+              col[tIdx * 3] = 0.96;     // warm parchment tone
+              col[tIdx * 3 + 1] = 0.90;
+              col[tIdx * 3 + 2] = 0.75;
+              mid[tIdx] = MID.base;
             }
           }
         }

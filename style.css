@@ -1,49 +1,116 @@
-/* Loy Krathong 3D Terminal & Canvas Simulation Styles */
+/* ==========================================================================
+   Loy Krathong 3D Terminal & Canvas Simulation
+   Siamese Heritage Artisanal Aesthetic (เครื่องเขินลงรักปิดทอง & กระดาษสาโบราณ)
+   ========================================================================== */
 
 :root {
-  --bg-dark: #060913;
-  --bg-card: rgba(13, 20, 36, 0.75);
-  --border-card: rgba(255, 215, 120, 0.18);
-  --thai-gold: #f5c453;
-  --thai-gold-light: #ffe599;
-  --lotus-pink: #ff6ea7;
-  --flame-orange: #ff8c2b;
-  --water-teal: #2bd9c8;
-  --text-main: #f0f4ff;
-  --text-muted: #8c9cb8;
+  /* Siamese Lacquerware (ลงรักดำขลับ) */
+  --bg-lacquer-deep: #07090e;
+  --bg-lacquer: #0a0e17;
+  --bg-lacquer-card: rgba(13, 18, 29, 0.88);
+  --bg-lacquer-elevated: rgba(18, 24, 38, 0.94);
+  
+  /* Pure Gold Leaf Foil (ทองคำเปลวบริสุทธิ์ & สำริดทองเหลือง) */
+  --gold-foil-high: #f8df97;
+  --gold-foil: #e5be65;
+  --gold-foil-deep: #c59738;
+  --gold-foil-dark: #8a651a;
+  --gold-foil-border: rgba(229, 190, 101, 0.28);
+  --gold-foil-glow: rgba(229, 190, 101, 0.18);
+  --gold-gradient: linear-gradient(135deg, #f8df97 0%, #e5be65 45%, #c59738 100%);
+  --gold-border-gradient: linear-gradient(135deg, rgba(248, 223, 151, 0.6), rgba(229, 190, 101, 0.25), rgba(197, 151, 56, 0.5));
+  
+  /* Traditional Handmade Saa Parchment (กระดาษสา & สมุดข่อยโบราณ) */
+  --parchment-bg: #14110d;
+  --parchment-surface: #1e1913;
+  --parchment-border: rgba(212, 175, 106, 0.35);
+  --parchment-text: #ebdcc4;
+  --parchment-muted: #af9f87;
+
+  /* Candlelight & Water (ประทีปส่องสว่าง & สายน้ำเจ้าพระยา) */
+  --candle-flame: #ff9e3b;
+  --candle-glow: rgba(255, 158, 59, 0.32);
+  --candle-subtle: rgba(255, 158, 59, 0.12);
+  --lotus-blush: #f06292;
+  --lotus-silk: #e91e63;
+  --lotus-glow: rgba(240, 98, 146, 0.35);
+  --river-teal: #32d6c3;
+  --river-teal-glow: rgba(50, 214, 195, 0.22);
+  
+  /* Editorial Typography */
+  --text-main: #f5f2eb;
+  --text-secondary: #c2cad9;
+  --text-muted: #838fa3;
+  --font-serif-thai: 'Noto Serif Thai', 'Times New Roman', serif;
+  --font-sans-thai: 'Sarabun', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  
+  /* Tactile Teak / Brass Controls */
+  --teak-dark: #12100d;
+  --brass-track: #151a26;
+  --brass-border: rgba(229, 190, 101, 0.3);
 }
 
-* {
+/* Base Reset & Smooth Rendering */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 14px;
+  background-color: var(--bg-lacquer-deep);
+  color: var(--text-main);
 }
 
 body {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-lacquer-deep);
   color: var(--text-main);
-  font-family: var(--font-sans);
+  font-family: var(--font-sans-thai);
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
   background-image:
-    radial-gradient(circle at 80% 20%, rgba(255, 230, 150, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 20% 70%, rgba(43, 217, 200, 0.05) 0%, transparent 45%);
+    radial-gradient(ellipse at 75% 15%, rgba(248, 223, 151, 0.05) 0%, transparent 45%),
+    radial-gradient(circle at 25% 80%, rgba(50, 214, 195, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 158, 59, 0.02) 0%, transparent 60%);
+  background-attachment: fixed;
 }
 
-/* Header */
+/* ==========================================================================
+   Header: Siamese Royal Lacquer & Gold Leaf Trim
+   ========================================================================== */
 header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 24px;
-  background: rgba(8, 12, 24, 0.85);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-card);
+  padding: 10px 22px;
+  background: rgba(10, 14, 23, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--gold-foil-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), inset 0 -1px 0 rgba(229, 190, 101, 0.1);
   z-index: 50;
+  position: relative;
+}
+
+/* Gold hairline accent below header */
+header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-foil), transparent);
+  pointer-events: none;
 }
 
 .logo-group {
@@ -53,92 +120,133 @@ header {
 }
 
 .logo-icon {
-  font-size: 28px;
-  filter: drop-shadow(0 0 10px rgba(255, 200, 80, 0.6));
+  font-size: 26px;
+  filter: drop-shadow(0 0 12px rgba(248, 223, 151, 0.7)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.9));
+  transform: translateY(-1px);
 }
 
 .title-text h1 {
-  font-size: 18px;
+  font-family: var(--font-serif-thai);
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  background: linear-gradient(90deg, #ffe082, #ffab40, #ff80ab);
+  letter-spacing: 0.6px;
+  background: linear-gradient(135deg, #fff7d6 0%, #f8df97 40%, #e5be65 75%, #c59738 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(229, 190, 101, 0.2);
+  line-height: 1.25;
 }
 
 .title-text p {
-  font-size: 11px;
+  font-family: var(--font-sans-thai);
+  font-size: 0.78rem;
+  font-weight: 400;
   color: var(--text-muted);
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .header-badges {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
+/* Minimalist Artisanal Badges */
 .badge {
-  background: rgba(255, 215, 120, 0.12);
-  color: var(--thai-gold-light);
-  border: 1px solid rgba(255, 215, 120, 0.25);
+  background: rgba(14, 20, 32, 0.85);
+  color: var(--gold-foil-high);
+  border: 1px solid var(--gold-foil-border);
   padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
+  border-radius: 4px;
+  font-size: 0.78rem;
   font-family: var(--font-mono);
   font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: inset 0 1px 0 rgba(248, 223, 151, 0.15), 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
 }
 
 .fps-badge {
-  background: rgba(43, 217, 200, 0.12);
-  color: var(--water-teal);
-  border-color: rgba(43, 217, 200, 0.3);
+  background: rgba(11, 25, 29, 0.85);
+  color: var(--river-teal);
+  border-color: rgba(50, 214, 195, 0.35);
+  box-shadow: inset 0 1px 0 rgba(50, 214, 195, 0.15), 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* Main Layout */
+/* ==========================================================================
+   Main Layout Container
+   ========================================================================== */
 .app-container {
   display: flex;
   flex: 1;
-  height: calc(100vh - 65px);
+  height: calc(100vh - 60px);
   position: relative;
   overflow: hidden;
 }
 
-/* Sidebar Controls */
+/* ==========================================================================
+   Sidebar: Bespoke Lacquerware Control Panel
+   ========================================================================== */
 .sidebar {
   width: 320px;
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  border-right: 1px solid var(--border-card);
+  background: var(--bg-lacquer-card);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-right: 1px solid var(--gold-foil-border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   z-index: 40;
-  transition: transform 0.3s ease;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 190, 101, 0.25) transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(229, 190, 101, 0.25);
+  border-radius: 3px;
+}
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(229, 190, 101, 0.45);
 }
 
 .sidebar-section {
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(229, 190, 101, 0.12);
+  position: relative;
+}
+
+.sidebar-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(229, 190, 101, 0.15), transparent);
 }
 
 .sidebar-section h3 {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  color: var(--thai-gold);
+  font-family: var(--font-serif-thai);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--gold-foil-high);
   margin-bottom: 12px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 /* Control Elements */
 .control-group {
-  margin-bottom: 14px;
+  margin-bottom: 13px;
 }
 
 .control-group:last-child {
@@ -148,95 +256,237 @@ header {
 .control-label {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-muted);
+  align-items: center;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
   margin-bottom: 6px;
+  font-weight: 400;
 }
 
 .control-label span:last-child {
   font-family: var(--font-mono);
-  color: var(--thai-gold-light);
+  color: var(--gold-foil-high);
+  font-size: 0.8rem;
+  background: rgba(14, 18, 28, 0.6);
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(229, 190, 101, 0.18);
 }
 
+/* Artisanal Dropdown Selects */
 select,
 input[type="text"] {
   width: 100%;
-  background: rgba(10, 16, 30, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: #0b0f1a;
+  border: 1px solid var(--gold-foil-border);
   color: var(--text-main);
   padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-family: var(--font-sans-thai);
+  font-size: 0.86rem;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(248, 223, 151, 0.08);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5be65' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+  padding-right: 32px;
+}
+
+select option {
+  background-color: #0e1320;
+  color: var(--text-main);
+  padding: 8px;
 }
 
 select:focus,
 input[type="text"]:focus {
-  border-color: var(--thai-gold);
-  box-shadow: 0 0 10px rgba(245, 196, 83, 0.25);
+  border-color: var(--gold-foil);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6), 0 0 12px rgba(229, 190, 101, 0.35);
+}
+
+/* ==========================================================================
+   Tactile Controls: Machined Brass & Polished Teak Sliders
+   ========================================================================== */
+.slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
 }
 
 input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
-  accent-color: var(--thai-gold);
+  height: 6px;
+  background: #111624;
+  border: 1px solid rgba(229, 190, 101, 0.22);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.85), 0 1px 0 rgba(248, 223, 151, 0.08);
+  outline: none;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
+/* Machined Brass Knob (Webkit) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff1b8, #e5be65 55%, #996e1b 95%);
+  border: 1px solid #ffea9f;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(229, 190, 101, 0.5);
+  cursor: grab;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.9), 0 0 14px rgba(248, 223, 151, 0.7);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.9), 0 0 16px rgba(255, 158, 59, 0.8);
+}
+
+/* Firefox Slider Support */
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  background: #111624;
+  border: 1px solid rgba(229, 190, 101, 0.22);
+  border-radius: 4px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff1b8, #e5be65 55%, #996e1b 95%);
+  border: 1px solid #ffea9f;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 0 10px rgba(229, 190, 101, 0.5);
+  cursor: grab;
+}
+
+/* ==========================================================================
+   Tactile Controls: Mechanical Siamese Brass Toggle Switch
+   ========================================================================== */
 .toggle-label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.86rem;
   color: var(--text-main);
   user-select: none;
 }
 
 .toggle-label input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: var(--thai-gold);
+  display: none;
 }
 
-/* Buttons */
+.toggle-switch-visual {
+  width: 38px;
+  height: 20px;
+  background: #0d121f;
+  border: 1px solid var(--gold-foil-border);
+  border-radius: 12px;
+  position: relative;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.75), 0 1px 0 rgba(248, 223, 151, 0.1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.toggle-switch-visual::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #9e9ba3, #5a5d68);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch-visual {
+  background: rgba(30, 24, 15, 0.95);
+  border-color: var(--gold-foil);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.6), 0 0 10px rgba(229, 190, 101, 0.25);
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-switch-visual::after {
+  left: 20px;
+  background: radial-gradient(circle at 35% 35%, #fff2be, #e5be65 60%, #b8861e);
+  border-color: #ffe694;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 8px rgba(229, 190, 101, 0.6);
+}
+
+/* ==========================================================================
+   Bespoke Lacquer Enamel Buttons
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 8px 14px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0f1422;
+  border: 1px solid var(--gold-foil-border);
   color: var(--text-main);
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 6px;
+  font-family: var(--font-sans-thai);
+  font-size: 0.86rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: inset 0 1px 0 rgba(248, 223, 151, 0.12), 0 2px 5px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: var(--thai-gold);
+  background: #171e30;
+  border-color: var(--gold-foil);
+  color: var(--gold-foil-high);
+  box-shadow: inset 0 1px 0 rgba(248, 223, 151, 0.2), 0 0 12px rgba(229, 190, 101, 0.25);
+}
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 .btn.primary {
-  background: linear-gradient(135deg, rgba(245, 196, 83, 0.25), rgba(255, 140, 43, 0.25));
-  border-color: var(--thai-gold);
-  color: var(--thai-gold-light);
+  background: linear-gradient(135deg, rgba(35, 27, 16, 0.95), rgba(48, 36, 18, 0.95));
+  border: 1px solid var(--gold-foil);
+  color: var(--gold-foil-high);
+  box-shadow: inset 0 1px 0 rgba(248, 223, 151, 0.3), 0 0 14px rgba(229, 190, 101, 0.22);
 }
 
 .btn.primary:hover {
-  background: linear-gradient(135deg, rgba(245, 196, 83, 0.4), rgba(255, 140, 43, 0.4));
-  box-shadow: 0 0 15px rgba(245, 196, 83, 0.35);
+  background: linear-gradient(135deg, rgba(50, 38, 20, 0.95), rgba(65, 48, 24, 0.95));
+  border-color: var(--gold-foil-high);
+  box-shadow: inset 0 1px 0 rgba(248, 223, 151, 0.4), 0 0 20px rgba(229, 190, 101, 0.4);
 }
 
 .btn.active {
-  background: rgba(245, 196, 83, 0.25);
-  border-color: var(--thai-gold);
-  color: #fff;
-  box-shadow: 0 0 12px rgba(245, 196, 83, 0.3);
+  background: rgba(45, 34, 18, 0.95);
+  border-color: var(--gold-foil-high);
+  color: #fff9e6;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 14px rgba(229, 190, 101, 0.4);
 }
 
 .btn-grid {
@@ -249,13 +499,35 @@ input[type="range"] {
   width: 100%;
 }
 
-/* Viewport Area */
+.lang-toggle {
+  font-family: var(--font-sans-thai);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-color: var(--gold-foil);
+  color: var(--gold-foil-high);
+}
+
+.lang-toggle:hover {
+  background: rgba(229, 190, 101, 0.15);
+}
+
+.audio-toggle.active {
+  border-color: var(--candle-flame);
+  color: var(--candle-flame);
+  box-shadow: 0 0 12px rgba(255, 158, 59, 0.35);
+}
+
+/* ==========================================================================
+   Viewport Area & Toolbar
+   ========================================================================== */
 .viewport-area {
   flex: 1;
   display: flex;
   flex-direction: column;
   position: relative;
-  background: #020409;
+  background: #04060c;
   overflow: hidden;
 }
 
@@ -263,46 +535,59 @@ input[type="range"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 18px;
-  background: rgba(10, 15, 28, 0.8);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 9px 18px;
+  background: rgba(9, 13, 22, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(229, 190, 101, 0.15);
   z-index: 10;
 }
 
 .mode-switch-group {
   display: flex;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(5, 8, 14, 0.8);
   padding: 3px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(229, 190, 101, 0.2);
 }
 
 .mode-btn {
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 5px 14px;
+  font-family: var(--font-sans-thai);
+  font-size: 0.8rem;
+  font-weight: 500;
   border: none;
   background: transparent;
   color: var(--text-muted);
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .mode-btn.active {
-  background: rgba(245, 196, 83, 0.25);
-  color: var(--thai-gold-light);
-  box-shadow: 0 0 10px rgba(245, 196, 83, 0.2);
+  background: rgba(36, 27, 16, 0.95);
+  color: var(--gold-foil-high);
+  border: 1px solid rgba(229, 190, 101, 0.4);
+  box-shadow: 0 0 10px rgba(229, 190, 101, 0.2);
 }
 
-/* Canvas Container */
+.viewport-info-text {
+  font-family: var(--font-serif-thai);
+  font-size: 0.8rem;
+  color: var(--parchment-muted);
+  letter-spacing: 0.4px;
+}
+
+/* ==========================================================================
+   Canvas Container
+   ========================================================================== */
 .canvas-container {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 20px;
+  padding: 16px;
   overflow: auto;
 }
 
@@ -311,183 +596,318 @@ canvas {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  border-radius: 10px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-  background: #04060d;
+  border-radius: 8px;
+  background: #020408;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.85);
 }
 
 /* CRT Screen Effect */
 .crt-curvature {
   filter: contrast(1.1) brightness(1.12);
-  box-shadow: 0 0 50px rgba(245, 196, 83, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 215, 120, 0.3);
+  box-shadow: 0 0 55px rgba(229, 190, 101, 0.14), inset 0 0 70px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(229, 190, 101, 0.35);
 }
 
 /* Modes */
 .canvas-container.mode-ascii #asciiCanvas {
   display: block;
 }
-
 .canvas-container.mode-ascii #graphicCanvas {
   display: none;
 }
-
 .canvas-container.mode-graphic #asciiCanvas {
   display: none;
 }
-
 .canvas-container.mode-graphic #graphicCanvas {
   display: block;
 }
-
 .canvas-container.mode-split {
-  gap: 20px;
+  gap: 16px;
 }
-
 .canvas-container.mode-split #asciiCanvas,
 .canvas-container.mode-split #graphicCanvas {
   display: block;
-  max-width: calc(50% - 10px);
+  max-width: calc(50% - 8px);
 }
 
-/* Floating Action Bar */
+/* ==========================================================================
+   Floating Action Bar: Royal Lotus & Golden Lantern
+   ========================================================================== */
 .floating-actions {
   position: absolute;
-  bottom: 24px;
+  bottom: 22px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 12px;
-  background: rgba(12, 18, 34, 0.88);
-  backdrop-filter: blur(16px);
-  padding: 10px 18px;
-  border-radius: 30px;
-  border: 1px solid var(--border-card);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  z-index: 20;
+  gap: 14px;
+  background: rgba(9, 13, 24, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 8px 18px;
+  border-radius: 35px;
+  border: 1px solid var(--gold-foil);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75), 0 0 25px rgba(229, 190, 101, 0.18);
+  z-index: 30;
+  transition: all 0.3s ease;
 }
 
 .action-pill {
-  padding: 8px 18px;
-  font-size: 13px;
+  padding: 10px 22px;
+  font-family: var(--font-serif-thai);
+  font-size: 0.94rem;
   font-weight: 600;
-  border-radius: 20px;
+  letter-spacing: 0.4px;
+  border-radius: 25px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  user-select: none;
 }
 
+.pill-icon {
+  font-size: 1.25rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+/* Royal Lotus Floating Action */
 .action-wish {
-  background: linear-gradient(135deg, #ff6ea7, #ff9e40);
-  color: #fff;
-  box-shadow: 0 0 15px rgba(255, 110, 167, 0.4);
+  background: linear-gradient(135deg, #d81b60 0%, #ad1457 60%, #880e4f 100%);
+  color: #fff8fb;
+  border: 1px solid rgba(255, 182, 193, 0.4);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 18px var(--lotus-glow);
 }
 
 .action-wish:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(255, 110, 167, 0.6);
+  background: linear-gradient(135deg, #e91e63 0%, #c2185b 60%, #ad1457 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 6px 24px rgba(233, 30, 99, 0.6);
 }
 
+.action-wish:active {
+  transform: translateY(1px);
+}
+
+/* Golden Sky Lantern Action */
 .action-lantern {
-  background: linear-gradient(135deg, #f5c453, #ff8c2b);
-  color: #1a1005;
-  box-shadow: 0 0 15px rgba(245, 196, 83, 0.4);
+  background: linear-gradient(135deg, #f8df97 0%, #e5be65 50%, #c59738 100%);
+  color: #1a1205;
+  border: 1px solid #ffecb3;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 4px 18px var(--gold-foil-glow);
 }
 
 .action-lantern:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(245, 196, 83, 0.6);
+  background: linear-gradient(135deg, #fff2be 0%, #f8df97 50%, #e5be65 100%);
+  box-shadow: inset 0 1px 0 #ffffff, 0 6px 24px rgba(229, 190, 101, 0.55);
 }
 
-/* Modals */
+.action-lantern:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   Modals: Handmade Saa Parchment Paper & Lacquerware Inlay
+   ========================================================================== */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
+  background: rgba(3, 5, 9, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 100;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.25s ease;
+  padding: 16px;
 }
 
 .modal-overlay.hidden {
   display: none;
 }
 
+/* Parchment Card */
 .modal-card {
-  width: 90%;
-  max-width: 520px;
-  background: #0e1526;
-  border: 1px solid var(--border-card);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  width: 100%;
+  max-width: 540px;
+  background-color: var(--parchment-bg);
+  /* Layered gradient simulating fibrous handmade paper texture */
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(229, 190, 101, 0.12) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(30, 24, 18, 0.95) 0%, rgba(18, 14, 10, 0.98) 100%);
+  border: 1px solid var(--parchment-border);
+  border-radius: 14px;
+  padding: 26px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 30px rgba(229, 190, 101, 0.15);
   position: relative;
+  overflow: hidden;
+}
+
+.parchment-gold-trim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gold-gradient);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(229, 190, 101, 0.2);
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modal-icon {
+  font-size: 1.4rem;
 }
 
 .modal-header h2 {
-  font-size: 18px;
-  color: var(--thai-gold);
+  font-family: var(--font-serif-thai);
+  font-size: 1.28rem;
+  font-weight: 700;
+  color: var(--gold-foil-high);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .modal-close {
   background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 20px;
+  border: 1px solid rgba(229, 190, 101, 0.2);
+  color: var(--gold-foil-high);
+  font-size: 1.3rem;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: rgba(229, 190, 101, 0.15);
+  border-color: var(--gold-foil);
+  transform: rotate(90deg);
 }
 
 .modal-body {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+}
+
+.parchment-lore {
+  font-family: var(--font-sans-thai);
+  font-size: 0.88rem;
+  color: var(--parchment-text);
+  line-height: 1.65;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid var(--gold-foil);
+}
+
+.parchment-label {
+  font-family: var(--font-sans-thai);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--gold-foil-high);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.parchment-input {
+  background: #0d0b08 !important;
+  border: 1px solid var(--parchment-border) !important;
+  color: var(--parchment-text) !important;
+  font-family: var(--font-sans-thai) !important;
+  font-size: 0.92rem !important;
+  padding: 10px 14px !important;
+}
+
+.parchment-input:focus {
+  border-color: var(--gold-foil) !important;
+  box-shadow: 0 0 12px rgba(229, 190, 101, 0.3) !important;
+}
+
+.parchment-select {
+  background-color: #0d0b08 !important;
+  border: 1px solid var(--parchment-border) !important;
+  color: var(--parchment-text) !important;
+  padding: 10px 14px !important;
+  font-size: 0.92rem !important;
+}
+
+.candle-glow-btn {
+  padding: 13px !important;
+  font-family: var(--font-serif-thai) !important;
+  font-size: 0.96rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.4px !important;
+  background: linear-gradient(135deg, rgba(60, 42, 18, 0.98), rgba(90, 60, 25, 0.98)) !important;
+  border: 1px solid var(--gold-foil-high) !important;
+  box-shadow: 0 0 20px var(--candle-glow) !important;
+}
+
+.candle-glow-btn:hover {
+  background: linear-gradient(135deg, rgba(80, 55, 24, 0.98), rgba(115, 75, 30, 0.98)) !important;
+  box-shadow: 0 0 30px rgba(255, 158, 59, 0.5) !important;
+}
+
+/* Python Math Code Inspector Modal Card */
+.code-inspector-card {
+  max-width: 780px;
 }
 
 .code-container {
-  max-height: 400px;
+  max-height: 420px;
   overflow-y: auto;
-  background: #050812;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 14px;
+  background: #06080e;
+  border: 1px solid rgba(229, 190, 101, 0.2);
+  padding: 16px;
   border-radius: 8px;
   font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.5;
-  color: #9cdcfe;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #aed9f5;
   white-space: pre;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.9);
 }
 
-/* Toast Notification */
+/* ==========================================================================
+   Toast Notification
+   ========================================================================== */
 .toast {
   position: fixed;
   bottom: 85px;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: rgba(14, 21, 38, 0.95);
-  border: 1px solid var(--thai-gold);
-  color: var(--thai-gold-light);
-  padding: 10px 22px;
+  background: rgba(18, 14, 10, 0.96);
+  border: 1px solid var(--gold-foil);
+  color: var(--gold-foil-high);
+  font-family: var(--font-sans-thai);
+  padding: 10px 24px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 0.88rem;
   font-weight: 500;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(229, 190, 101, 0.25);
   pointer-events: none;
   opacity: 0;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 110;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 120;
 }
 
 .toast.visible {
@@ -495,49 +915,43 @@ canvas {
   transform: translateX(-50%) translateY(0);
 }
 
-/* Responsive */
-
-/* Language toggle button */
-.lang-toggle {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 5px 10px;
-  border-color: var(--thai-gold);
-  color: var(--thai-gold);
-}
-
-.lang-toggle:hover {
-  background: rgba(245, 196, 83, 0.15);
-}
+/* ==========================================================================
+   Responsive Viewport Refinements
+   Tablet & Mobile: 360px - 900px
+   ========================================================================== */
 
 /* ── Tablet (≤ 900px) ── */
 @media (max-width: 900px) {
   .app-container {
     flex-direction: column;
+    height: auto;
+    overflow-y: auto;
   }
 
   .sidebar {
     width: 100%;
-    max-height: 230px;
+    max-height: 250px;
     border-right: none;
-    border-bottom: 1px solid var(--border-card);
+    border-bottom: 1px solid var(--gold-foil-border);
     overflow-x: auto;
     overflow-y: auto;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 0;
   }
 
   .sidebar-section {
-    min-width: 240px;
+    min-width: 250px;
     border-bottom: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    border-right: 1px solid rgba(229, 190, 101, 0.12);
+  }
+
+  .viewport-area {
+    min-height: 520px;
   }
 
   .canvas-container.mode-split {
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
 
   .canvas-container.mode-split #asciiCanvas,
@@ -546,21 +960,21 @@ canvas {
   }
 
   .floating-actions {
-    bottom: 12px;
-    padding: 8px 12px;
-    gap: 8px;
+    bottom: 16px;
+    padding: 7px 14px;
+    gap: 10px;
   }
 
   .action-pill {
-    padding: 7px 12px;
-    font-size: 12px;
+    padding: 8px 16px;
+    font-size: 0.88rem;
   }
 }
 
-/* ── Mobile (≤ 600px) ── */
+/* ── Mobile (≤ 600px) Ergonomics (360px - 430px Viewports) ── */
 @media (max-width: 600px) {
   header {
-    padding: 10px 14px;
+    padding: 8px 12px;
     flex-wrap: wrap;
     gap: 8px;
   }
@@ -570,7 +984,7 @@ canvas {
   }
 
   .title-text h1 {
-    font-size: 14px;
+    font-size: 1.1rem;
   }
 
   .title-text p {
@@ -583,97 +997,116 @@ canvas {
   }
 
   .badge {
-    font-size: 10px;
-    padding: 3px 8px;
+    font-size: 0.72rem;
+    padding: 3px 7px;
   }
 
-  /* Hide the grid-size badge on very small screens */
   #gridBadge {
     display: none;
   }
 
   .btn {
-    font-size: 12px;
-    padding: 6px 10px;
+    font-size: 0.78rem;
+    padding: 5px 9px;
   }
 
   .sidebar {
-    max-height: 200px;
+    max-height: 210px;
   }
 
   .sidebar-section {
-    min-width: 200px;
+    min-width: 220px;
     padding: 12px 14px;
   }
 
   .sidebar-section h3 {
-    font-size: 10px;
+    font-size: 0.8rem;
   }
 
   .viewport-toolbar {
     flex-wrap: wrap;
     gap: 6px;
-    padding: 8px 12px;
+    padding: 7px 10px;
   }
 
-  .viewport-toolbar > div:last-child {
+  .viewport-info-text {
     display: none;
   }
 
   .mode-btn {
-    font-size: 11px;
-    padding: 5px 10px;
+    font-size: 0.75rem;
+    padding: 4px 10px;
   }
 
   .canvas-container {
-    padding: 10px;
+    padding: 8px;
+    min-height: 380px;
   }
 
+  /* Ergonomic Floating Action Bar for Thumb Reach */
   .floating-actions {
-    flex-direction: column;
-    align-items: stretch;
-    bottom: 10px;
-    left: 12px;
-    right: 12px;
+    flex-direction: row;
+    justify-content: center;
+    bottom: max(12px, env(safe-area-inset-bottom, 12px));
+    left: 10px;
+    right: 10px;
     transform: none;
-    border-radius: 16px;
-    padding: 10px 12px;
-    gap: 6px;
+    border-radius: 28px;
+    padding: 6px 10px;
+    gap: 8px;
   }
 
   .action-pill {
+    flex: 1;
     justify-content: center;
-    font-size: 13px;
-    padding: 10px 12px;
+    font-size: 0.84rem;
+    padding: 9px 8px;
+    min-height: 42px;
+  }
+
+  .pill-icon {
+    font-size: 1.1rem;
   }
 
   .modal-card {
     width: 95%;
-    padding: 18px 16px;
+    padding: 18px 14px;
   }
 
   .modal-header h2 {
-    font-size: 15px;
+    font-size: 1.1rem;
   }
 
-  .btn-grid {
-    grid-template-columns: 1fr 1fr;
+  .parchment-lore {
+    font-size: 0.8rem;
+    padding: 10px;
   }
 
   .code-container {
-    font-size: 10px;
-    max-height: 260px;
+    font-size: 0.72rem;
+    max-height: 280px;
   }
 }
 
-/* ── Very small (≤ 380px) ── */
+/* ── Narrow Mobile (≤ 380px) ── */
 @media (max-width: 380px) {
-  .floating-actions {
-    left: 8px;
-    right: 8px;
+  header {
+    padding: 6px 8px;
   }
 
   .title-text h1 {
-    font-size: 12px;
+    font-size: 0.98rem;
+  }
+
+  .floating-actions {
+    left: 6px;
+    right: 6px;
+    gap: 6px;
+    padding: 5px 8px;
+  }
+
+  .action-pill {
+    font-size: 0.78rem;
+    padding: 8px 6px;
   }
 }

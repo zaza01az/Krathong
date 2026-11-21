@@ -3,13 +3,13 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>ประเพณีลอยกระทง • 3D ASCII Simulation</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cascadia+Code:wght@400;600&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@400;600&family=Inter:wght@400;500;600;700&family=Noto+Serif+Thai:wght@400;500;600;700;800&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
     rel="stylesheet">
 </head>
 
@@ -18,7 +18,7 @@
   <!-- Top Header Navigation -->
   <header>
     <div class="logo-group">
-      <div class="logo-icon">🪷</div>
+      <div class="logo-icon" aria-label="Krathong Icon">🪷</div>
       <div class="title-text">
         <h1 id="site-title">ประเพณีลอยกระทง</h1>
         <p id="site-subtitle">จำลอง 3D ตัวอักษร ASCII เชิงคณิตศาสตร์</p>
@@ -27,8 +27,8 @@
     <div class="header-badges">
       <div class="badge fps-badge" id="fpsDisplay">60 FPS</div>
       <div class="badge" id="gridBadge">120 × 44</div>
-      <button class="btn lang-toggle" id="langBtn">TH / EN</button>
-      <button class="btn" id="audioBtn" data-th="เปิดเพลง: ปิด" data-en="Music: OFF">เปิดเพลง: ปิด</button>
+      <button class="btn lang-toggle" id="langBtn" title="Switch Language">TH / EN</button>
+      <button class="btn audio-toggle" id="audioBtn" data-th="เปิดเพลง: ปิด" data-en="Music: OFF">เปิดเพลง: ปิด</button>
     </div>
   </header>
 
@@ -40,10 +40,12 @@
 
       <!-- Rendering & Character Set -->
       <div class="sidebar-section">
-        <h3>🎨 Character & Display</h3>
+        <h3 data-th="🎨 ตัวอักษรและการแสดงผล" data-en="🎨 Character &amp; Display">🎨 ตัวอักษรและการแสดงผล</h3>
 
         <div class="control-group">
-          <div class="control-label"><span>Character Ramp</span></div>
+          <div class="control-label">
+            <span data-th="ชุดอักษรความสว่าง (Ramp)" data-en="Character Ramp">ชุดอักษรความสว่าง (Ramp)</span>
+          </div>
           <select id="rampSelect">
             <option value="numeric">Original Numeric: " 0123456789"</option>
             <option value="standard">Standard ASCII: " .:-=+*#%@"</option>
@@ -55,12 +57,14 @@
         </div>
 
         <div class="control-group">
-          <div class="control-label"><span>Color Palette</span></div>
+          <div class="control-label">
+            <span data-th="ชุดโทนสี (Palette)" data-en="Color Palette">ชุดโทนสี (Palette)</span>
+          </div>
           <select id="palSelect">
-            <option value="truecolor">Full 24-bit TrueColor (Python)</option>
+            <option value="truecolor">Full 24-bit TrueColor (ต้นฉบับ Python)</option>
+            <option value="gold">Royal Siam Gold (ทองคำสุวรรณภูมิ)</option>
             <option value="amber">Vintage Amber CRT (Phosphor P3)</option>
             <option value="green">Retro Green CRT (Phosphor P1)</option>
-            <option value="gold">Royal Siam Gold</option>
             <option value="cyan">Cyberpunk Cyan</option>
             <option value="mono">Monochrome Grayscale</option>
           </select>
@@ -69,39 +73,47 @@
         <div class="control-group">
           <label class="toggle-label">
             <input type="checkbox" id="crtToggle" checked>
-            <span>CRT Scanlines & Curved Screen</span>
+            <span class="toggle-switch-visual"></span>
+            <span data-th="เส้นสแกน CRT และกระจกจอโค้ง" data-en="CRT Scanlines &amp; Curved Screen">เส้นสแกน CRT
+              และกระจกจอโค้ง</span>
           </label>
         </div>
       </div>
 
       <!-- Krathong & Atmosphere -->
       <div class="sidebar-section">
-        <h3>🪷 Krathong & Atmosphere</h3>
+        <h3 data-th="กระทงและบรรยากาศ" data-en="🪷 Krathong &amp; Atmosphere">🪷 กระทงและบรรยากาศ</h3>
 
         <div class="control-group">
-          <div class="control-label"><span>Lotus Petal Style</span></div>
+          <div class="control-label">
+            <span data-th="รูปแบบกลีบกระทง" data-en="Lotus Petal Style">รูปแบบกลีบกระทง</span>
+          </div>
           <select id="lotusSelect">
-            <option value="pink">Royal Pink Lotus (ดอกบัวชมพู)</option>
-            <option value="gold">Siam Royal Gold (ทองคำอร่าม)</option>
-            <option value="emerald">Emerald Jade (หยกมรกต)</option>
-            <option value="white">Pure White Jasmine (มะลิบริสุทธิ์)</option>
+            <option value="pink">Royal Pink Lotus (ดอกบัวชมพูพิกุลแก้ว)</option>
+            <option value="gold">Siam Royal Gold (ทองคำอร่ามสุพรรณหงส์)</option>
+            <option value="emerald">Emerald Jade (หยกมรกตใบตองสด)</option>
+            <option value="white">Pure White Jasmine (มะลิบริสุทธิ์นวลตา)</option>
           </select>
         </div>
 
         <div class="control-group">
-          <div class="control-label"><span>Night Sky Atmosphere</span></div>
+          <div class="control-label">
+            <span data-th="บรรยากาศท้องฟ้าราตรี" data-en="Night Sky Atmosphere">บรรยากาศท้องฟ้าราตรี</span>
+          </div>
           <select id="themeSelect">
-            <option value="night">Full Moon Midnight (คืนวันเพ็ญ)</option>
-            <option value="twilight">Purple Twilight (ยามพลบค่ำ)</option>
+            <option value="night">Full Moon Midnight (คืนเพ็ญเดือนสิบสอง)</option>
+            <option value="twilight">Purple Twilight (ยามพลบค่ำสุริยา)</option>
             <option value="dusk">Golden Dusk (ยามอาทิตย์อัสดง)</option>
-            <option value="dawn">Morning Dawn (ยามรุ่งอรุณ)</option>
+            <option value="dawn">Morning Dawn (ยามรุ่งอรุณศิวาลัย)</option>
           </select>
         </div>
 
         <div class="control-group">
-          <div class="control-label"><span>Resolution Grid</span></div>
+          <div class="control-label">
+            <span data-th="ความละเอียดตาราง ASCII" data-en="Resolution Grid">ความละเอียดตาราง ASCII</span>
+          </div>
           <select id="gridSelect">
-            <option value="120x44">Classic: 120 × 44 (Python Default)</option>
+            <option value="120x44">Classic: 120 × 44 (ค่าดั้งเดิม)</option>
             <option value="80x30">Compact: 80 × 30</option>
             <option value="160x60">HD Grid: 160 × 60</option>
             <option value="200x75">Ultra High-Res: 200 × 75</option>
@@ -111,61 +123,75 @@
 
       <!-- Physics & Environment Sliders -->
       <div class="sidebar-section">
-        <h3>🌊 Physics & Lighting</h3>
+        <h3 data-th="🌊 ฟิสิกส์และแสงสว่าง" data-en="🌊 Physics &amp; Lighting">🌊 ฟิสิกส์และแสงสว่าง</h3>
 
         <div class="control-group">
           <div class="control-label">
-            <span>Water Currents & Waves</span>
+            <span data-th="คลื่นและกระแสน้ำ" data-en="Water Currents &amp; Waves">คลื่นและกระแสน้ำ</span>
             <span id="waterSliderVal">1.0x</span>
           </div>
-          <input type="range" id="waterSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+          <div class="slider-wrapper">
+            <input type="range" id="waterSlider" min="0.2" max="2.5" step="0.1" value="1.0">
+          </div>
         </div>
 
         <div class="control-group">
           <div class="control-label">
-            <span>Wind Force (Flame & Smoke)</span>
+            <span data-th="แรงลม (เปลวเทียนและควัน)" data-en="Wind Force (Flame &amp; Smoke)">แรงลม
+              (เปลวเทียนและควัน)</span>
             <span id="windSliderVal">0.00</span>
           </div>
-          <input type="range" id="windSlider" min="-1.5" max="1.5" step="0.05" value="0.0">
+          <div class="slider-wrapper">
+            <input type="range" id="windSlider" min="-1.5" max="1.5" step="0.05" value="0.0">
+          </div>
         </div>
 
         <div class="control-group">
           <div class="control-label">
-            <span>Candle Light & Flicker</span>
+            <span data-th="แสงเทียนและการกะพริบ" data-en="Candle Light &amp; Flicker">แสงเทียนและการกะพริบ</span>
             <span id="candleSliderVal">1.0x</span>
           </div>
-          <input type="range" id="candleSlider" min="0.3" max="2.2" step="0.1" value="1.0">
+          <div class="slider-wrapper">
+            <input type="range" id="candleSlider" min="0.3" max="2.2" step="0.1" value="1.0">
+          </div>
         </div>
 
         <div class="control-group">
           <div class="control-label">
-            <span>Moon Radiance</span>
+            <span data-th="รัศมีแสงจันทร์วันเพ็ญ" data-en="Moon Radiance">รัศมีแสงจันทร์วันเพ็ญ</span>
             <span id="moonSliderVal">1.0x</span>
           </div>
-          <input type="range" id="moonSlider" min="0.2" max="2.0" step="0.1" value="1.0">
+          <div class="slider-wrapper">
+            <input type="range" id="moonSlider" min="0.2" max="2.0" step="0.1" value="1.0">
+          </div>
         </div>
 
         <div class="control-group">
           <div class="control-label">
-            <span>Simulation Speed</span>
+            <span data-th="ความเร็วการจำลอง" data-en="Simulation Speed">ความเร็วการจำลอง</span>
             <span id="speedSliderVal">1.0x</span>
           </div>
-          <input type="range" id="speedSlider" min="0.2" max="3.0" step="0.1" value="1.0">
+          <div class="slider-wrapper">
+            <input type="range" id="speedSlider" min="0.2" max="3.0" step="0.1" value="1.0">
+          </div>
         </div>
       </div>
 
       <!-- Export & Utilities -->
       <div class="sidebar-section">
-        <h3>💾 Export & Code</h3>
+        <h3 data-th="💾 ส่งออกและโค้ด" data-en="💾 Export &amp; Code">💾 ส่งออกและโค้ด</h3>
         <div class="btn-grid" style="margin-bottom: 8px;">
-          <button class="btn" id="copyAsciiBtn" title="Copy ASCII plain text to clipboard">Copy ASCII</button>
-          <button class="btn" id="copyAnsiBtn" title="Copy 24-bit ANSI colored text">Copy ANSI</button>
+          <button class="btn" id="copyAsciiBtn" title="Copy ASCII plain text to clipboard" data-th="คัดลอก ASCII"
+            data-en="Copy ASCII">คัดลอก ASCII</button>
+          <button class="btn" id="copyAnsiBtn" title="Copy 24-bit ANSI colored text" data-th="คัดลอก ANSI สี"
+            data-en="Copy ANSI">คัดลอก ANSI สี</button>
         </div>
         <div class="btn-grid" style="margin-bottom: 8px;">
-          <button class="btn" id="snapshotBtn">Save PNG</button>
-          <button class="btn" id="pauseBtn">Pause</button>
+          <button class="btn" id="snapshotBtn" data-th="บันทึกภาพ PNG" data-en="Save PNG">บันทึกภาพ PNG</button>
+          <button class="btn" id="pauseBtn" data-th="หยุดชั่วคราว" data-en="Pause">หยุดชั่วคราว</button>
         </div>
-        <button class="btn btn-full primary" id="viewCodeBtn">📜 Inspect Math & Python Code</button>
+        <button class="btn btn-full primary" id="viewCodeBtn" data-th="📜 ตรวจสอบสูตรคณิต &amp; โค้ด"
+          data-en="📜 Inspect Math &amp; Python Code">📜 ตรวจสอบสูตรคณิต &amp; โค้ด</button>
       </div>
 
     </aside>
@@ -176,11 +202,14 @@
       <!-- Top Viewport Mode Bar -->
       <div class="viewport-toolbar">
         <div class="mode-switch-group">
-          <button class="mode-btn active" data-mode="ascii" data-th="ASCII Matrix" data-en="ASCII Matrix">ASCII Matrix</button>
+          <button class="mode-btn active" data-mode="ascii" data-th="ASCII Matrix" data-en="ASCII Matrix">ASCII
+            Matrix</button>
           <button class="mode-btn" data-mode="split" data-th="มุมมองคู่" data-en="Split View">มุมมองคู่</button>
         </div>
-        <div style="font-size: 12px; color: var(--text-muted);">
-          <span>Full Moon Night • Wat Arun Silhouette • Candlelight Reflection</span>
+        <div class="viewport-info-text">
+          <span data-th="คืนวันเพ็ญเดือน ๑๒ • เงาวัดอรุณราชวราราม • แสงเทียนสะท้อนผิวน้ำเจ้าพระยา"
+            data-en="Full Moon Night • Wat Arun Silhouette • Candlelight Reflection">คืนวันเพ็ญเดือน ๑๒ •
+            เงาวัดอรุณราชวราราม • แสงเทียนสะท้อนผิวน้ำเจ้าพระยา</span>
         </div>
       </div>
 
@@ -192,13 +221,14 @@
 
       <!-- Bottom Floating Action Bar -->
       <div class="floating-actions">
-        <button class="action-pill action-wish" id="floatWishBtn">
-          <span>🪷</span>
-          <span id="wishLabel" data-th="อธิษฐาน &amp; ปล่อยกระทง" data-en="Make a Wish &amp; Float">อธิษฐาน &amp; ปล่อยกระทง</span>
+        <button class="action-pill action-wish" id="floatWishBtn" aria-label="Float Krathong and Make a Wish">
+          <span class="pill-icon">🪷</span>
+          <span id="wishLabel" data-th="อธิษฐาน &amp; ลอยกระทง" data-en="Make a Wish &amp; Float">อธิษฐาน &amp;
+            ลอยกระทง</span>
         </button>
-        <button class="action-pill action-lantern" id="floatLanternBtn">
-          <span>🏮</span>
-          <span id="lanternLabel" data-th="ปล่อยโคมลอย" data-en="Release Sky Lantern">ปล่อยโคมลอย</span>
+        <button class="action-pill action-lantern" id="floatLanternBtn" aria-label="Release Sky Lantern">
+          <span class="pill-icon">🏮</span>
+          <span id="lanternLabel" data-th="ปล่อยโคมลอยสู่ฟ้า" data-en="Release Sky Lantern">ปล่อยโคมลอยสู่ฟ้า</span>
         </button>
       </div>
 
@@ -206,56 +236,72 @@
 
   </div>
 
-  <!-- Wish Dialog Modal -->
-  <div class="modal-overlay hidden" id="wishModal">
-    <div class="modal-card">
+  <!-- Wish Dialog Modal (Artisanal Handmade Parchment Style) -->
+  <div class="modal-overlay hidden" id="wishModal" role="dialog" aria-modal="true" aria-labelledby="wishModalTitle">
+    <div class="modal-card parchment-card">
+      <div class="parchment-gold-trim"></div>
       <div class="modal-header">
-        <h2 id="wishModalTitle" data-th="อธิษฐานลอยกระทง" data-en="Float Your Wish">อธิษฐานลอยกระทง</h2>
-        <button class="modal-close" id="closeWishBtn">&times;</button>
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🪷</span>
+          <h2 id="wishModalTitle" data-th="ตั้งจิตอธิษฐานลอยกระทง" data-en="Loy Krathong Offering &amp; Wish">
+            ตั้งจิตอธิษฐานลอยกระทง</h2>
+        </div>
+        <button class="modal-close" id="closeWishBtn" aria-label="Close dialog">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
-          Traditional Loy Krathong prayer: Request forgiveness from Phra Mae Khongkha (Goddess of Water), wash away bad
-          luck, and send blessings for peace, prosperity, and love.
+        <p class="parchment-lore"
+          data-th="ประเพณีลอยกระทง: ขอขมาต่อพระแม่คงคา บูชารอยพระพุทธบาท ลอยเคราะห์และทุกข์โศกไปกับสายน้ำ พร้อมส่งคำอธิษฐานเสริมสิริมงคล ความสุข และความเจริญรุ่งเรือง"
+          data-en="Traditional Loy Krathong prayer: Request forgiveness from Phra Mae Khongkha (Goddess of Water), wash away misfortunes, and send blessings for peace, prosperity, and love.">
+          ประเพณีลอยกระทง: ขอขมาต่อพระแม่คงคา บูชารอยพระพุทธบาท ลอยเคราะห์และทุกข์โศกไปกับสายน้ำ
+          พร้อมส่งคำอธิษฐานเสริมสิริมงคล ความสุข และความเจริญรุ่งเรือง
         </p>
 
         <div class="control-group">
-          <label style="font-size: 12px; color: var(--thai-gold); margin-bottom: 6px; display: block;">Your Wish /
-            คำอธิษฐาน:</label>
-          <input type="text" id="wishInput" placeholder="e.g., ขอขมาพระแม่คงคา สุขภาพแข็งแรง มีความสุขตลอดปี"
-            value="ขอขมาพระแม่คงคา & สุขภาพแข็งแรง เจริญรุ่งเรือง">
+          <label class="parchment-label" data-th="คำอธิษฐานของคุณ (Your Wish):"
+            data-en="Your Wish / คำอธิษฐาน:">คำอธิษฐานของคุณ (Your Wish):</label>
+          <input type="text" id="wishInput" class="parchment-input"
+            placeholder="ขอขมาพระแม่คงคา สุขภาพแข็งแรง มีความสุขตลอดปี"
+            value="ขอขมาพระแม่คงคา &amp; สุขภาพแข็งแรง เจริญรุ่งเรือง">
         </div>
 
         <div class="control-group">
-          <label style="font-size: 12px; color: var(--thai-gold); margin-bottom: 6px; display: block;">Krathong Offering
-            Color:</label>
-          <select id="wishColorSelect">
-            <option value="pink">Pink Lotus & Banana Leaf (ดอกบัวสีชมพู)</option>
-            <option value="gold">Golden Marigold Royal (ดาวเรืองสีทอง)</option>
-            <option value="white">White Orchid & Jasmine (กล้วยไม้ขาว)</option>
-            <option value="emerald">Emerald Green (ใบตองสดมรกต)</option>
+          <label class="parchment-label" data-th="สีเครื่องบูชากระทง (Offering Color):"
+            data-en="Krathong Offering Color:">สีเครื่องบูชากระทง (Offering Color):</label>
+          <select id="wishColorSelect" class="parchment-select">
+            <option value="pink">Pink Lotus &amp; Banana Leaf (ดอกบัวชมพูพิกุล)</option>
+            <option value="gold">Golden Marigold Royal (ดาวเรืองสีทองบริสุทธิ์)</option>
+            <option value="white">White Orchid &amp; Jasmine (กล้วยไม้ขาวมะลิลา)</option>
+            <option value="emerald">Emerald Green (ใบตองสดมรกตสายน้ำ)</option>
           </select>
         </div>
 
-        <button class="btn btn-full primary" id="sendWishBtn" style="padding: 12px; font-size: 14px; font-weight: 600;">
-          🕯️ Light Candle & Release Krathong onto River
+        <button class="btn btn-full primary candle-glow-btn" id="sendWishBtn"
+          data-th="🕯️ จุดประทีป &amp; ลอยกระทงสู่สายน้ำ" data-en="🕯️ Light Candle &amp; Release Krathong">
+          🕯️ จุดประทีป &amp; ลอยกระทงสู่สายน้ำ
         </button>
       </div>
     </div>
   </div>
 
   <!-- Python Math Code Inspector Modal -->
-  <div class="modal-overlay hidden" id="codeModal">
-    <div class="modal-card" style="max-width: 750px;">
+  <div class="modal-overlay hidden" id="codeModal" role="dialog" aria-modal="true">
+    <div class="modal-card code-inspector-card">
+      <div class="parchment-gold-trim"></div>
       <div class="modal-header">
-        <h2>📜 Mathematical Model & Python Source</h2>
-        <button class="modal-close" id="closeCodeBtn">&times;</button>
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📜</span>
+          <h2 data-th="โมเดลคณิตศาสตร์ 3 มิติ และโค้ด Python" data-en="Mathematical Model &amp; Python Source">
+            โมเดลคณิตศาสตร์ 3 มิติ และโค้ด Python</h2>
+        </div>
+        <button class="modal-close" id="closeCodeBtn" aria-label="Close dialog">&times;</button>
       </div>
       <div class="modal-body">
-        <p style="font-size: 13px; color: var(--text-muted);">
-          The simulation runs 1:1 mathematical formulas identical to the Python script: 3D parametric surface geometry,
-          surface normal gradients, Z-buffering, water wave harmonics, flame fluid oscillation, and numeric density
-          rasterization.
+        <p class="parchment-lore"
+          data-th="การจำลองทำงานด้วยสูตรคณิตศาสตร์ 1:1 ตรงตามต้นฉบับ Python: เรขาคณิตพาราเมตริก 3D, การคำนวณเวกเตอร์ความสว่างของผิว, บัฟเฟอร์ความลึก Z-Buffer, ฮาร์มอนิกคลื่นน้ำหลายความถี่, การส่ายของเปลวเทียนฟลูอิด และการเรนเดอร์ความหนาแน่นตัวอักษร"
+          data-en="The simulation runs 1:1 mathematical formulas identical to the Python script: 3D parametric surface geometry, surface normal gradients, Z-buffering, water wave harmonics, flame fluid oscillation, and numeric density rasterization.">
+          การจำลองทำงานด้วยสูตรคณิตศาสตร์ 1:1 ตรงตามต้นฉบับ Python: เรขาคณิตพาราเมตริก 3D,
+          การคำนวณเวกเตอร์ความสว่างของผิว, บัฟเฟอร์ความลึก Z-Buffer, ฮาร์มอนิกคลื่นน้ำหลายความถี่,
+          การส่ายของเปลวเทียนฟลูอิด และการเรนเดอร์ความหนาแน่นตัวอักษร
         </p>
         <div class="code-container"># 1. 3D Krathong Floating Pose (Yaw, Pitch, Roll & Bobbing)
           def body_pose(t):

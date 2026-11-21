@@ -30,6 +30,7 @@ class LoyKrathongApp {
     this.initUI();
     this.initWishSystem();
     this.initSliders();
+    this.initTactileInteractions();
     this.animate = this.animate.bind(this);
     requestAnimationFrame(this.animate);
   }
@@ -269,10 +270,20 @@ class LoyKrathongApp {
         wishModal.classList.add('hidden');
         wishInput.value = '';
 
-        // Auto trigger musical chime
+        // Authentic Thai Piphat chime: Ranat Ek high notes with Ching shimmer
         if (this.audio.ctx) {
-          this.audio.playKhimNote(523.25, 1.2);
-          setTimeout(() => this.audio.playKhimNote(659.25, 1.4), 180);
+          const now = this.audio.ctx.currentTime;
+          if (this.audio.playRanatNote) {
+            this.audio.playRanatNote(523.25, now, 0.35); // C5
+            this.audio.playRanatNote(659.25, now + 0.16, 0.4); // E5
+            this.audio.playRanatNote(783.99, now + 0.32, 0.55); // G5
+            if (this.audio.playChing) {
+              this.audio.playChing(now + 0.34);
+            }
+          } else if (this.audio.playKhimNote) {
+            this.audio.playKhimNote(523.25, 1.2);
+            setTimeout(() => this.audio.playKhimNote(659.25, 1.4), 180);
+          }
         }
       });
     }
@@ -282,10 +293,72 @@ class LoyKrathongApp {
         this.engine.addSkyLantern();
         this.showToast('🏮 Sky lantern (โคมลอย) released into the stars!');
         if (this.audio.ctx) {
-          this.audio.playKhimNote(783.99, 1.5);
+          const now = this.audio.ctx.currentTime;
+          if (this.audio.playRanatNote) {
+            this.audio.playRanatNote(783.99, now, 0.4); // G5
+            this.audio.playRanatNote(880.00, now + 0.18, 0.6); // A5
+            if (this.audio.playChing) {
+              this.audio.playChing(now + 0.2);
+            }
+          } else if (this.audio.playKhimNote) {
+            this.audio.playKhimNote(783.99, 1.5);
+          }
         }
       });
     }
+  }
+
+  initTactileInteractions() {
+    if (!this.container) return;
+
+    // Convert mouse or touch event coordinates to internal engine canvas coordinates
+    const triggerRippleAtEvent = (clientX, clientY, strength = 1.0) => {
+      const activeCanvas = (this.activeMode === 'graphic') ? this.graphicCanvas : this.asciiCanvas;
+      const rect = activeCanvas.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const normX = (clientX - rect.left) / rect.width;
+      const normY = (clientY - rect.top) / rect.height;
+
+      // Ensure within canvas bounds
+      if (normX < 0 || normX > 1 || normY < 0 || normY > 1) return;
+
+      const artX = normX * this.engine.artW;
+      const artY = normY * this.engine.artH;
+
+      // Trigger radiating concentric ripple on river surface
+      this.engine.addRipple(artX, artY, strength);
+
+      // Play soft water droplet sound if audio context is active
+      if (this.audio && this.audio.ctx && this.audio.ctx.state === 'running') {
+        if (this.audio.playRanatNote && Math.random() > 0.4) {
+          const notes = [659.25, 783.99, 880.00];
+          const chosen = notes[Math.floor(Math.random() * notes.length)];
+          this.audio.playRanatNote(chosen, this.audio.ctx.currentTime, 0.15);
+        }
+      }
+    };
+
+    // Click / tap on canvas container
+    this.container.addEventListener('pointerdown', (e) => {
+      // Don't intercept if clicking on buttons or controls
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('select')) {
+        return;
+      }
+      triggerRippleAtEvent(e.clientX, e.clientY, 1.2);
+    });
+
+    // Touch drag on river for fluid trail ripples (throttled)
+    let lastDragTime = 0;
+    this.container.addEventListener('pointermove', (e) => {
+      if (e.buttons > 0) { // dragging/holding
+        const now = performance.now();
+        if (now - lastDragTime > 80) { // ~12 fps ripple drops
+          lastDragTime = now;
+          triggerRippleAtEvent(e.clientX, e.clientY, 0.65);
+        }
+      }
+    });
   }
 
   setMode(mode) {
